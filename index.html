@@ -1,159 +1,914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Aerospace Decision Tool</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    :root {
+      --bg: #07111f;
+      --card: rgba(15, 23, 42, 0.86);
+      --card-2: rgba(30, 41, 59, 0.78);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --line: rgba(148, 163, 184, 0.22);
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #0f172a;
-      color: white;
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 34rem),
+        radial-gradient(circle at top right, rgba(129, 140, 248, 0.22), transparent 28rem),
+        linear-gradient(135deg, #020617 0%, #07111f 52%, #0f172a 100%);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0 26px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.28);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 14px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 26px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .hero-card,
+    .panel {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.72));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-card {
+      padding: 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 230px;
+      height: 230px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      filter: blur(4px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.11);
+      font-size: 13px;
+      font-weight: 750;
+      margin-bottom: 18px;
     }
 
     h1 {
-      text-align: center;
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 22px 0 0;
+    }
+
+    .quote {
+      margin-top: 24px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+      border-radius: 16px;
+      color: #e0f2fe;
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .hero-side {
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(2, 6, 23, 0.38);
+      border: 1px solid var(--line);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-text {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 18px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid.two {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .pill {
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.68);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .controls {
-      margin-bottom: 20px;
+      display: grid;
+      gap: 14px;
     }
 
-    label {
-      display: block;
-      margin-top: 10px;
+    .control {
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid var(--line);
+      border-radius: 18px;
     }
 
-    input[type=range] {
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: #e2e8f0;
+      font-weight: 750;
+      font-size: 14px;
+    }
+
+    .control-top span:last-child {
+      color: #bae6fd;
+    }
+
+    input[type="range"] {
       width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.12);
+      color: #e0f2fe;
+      padding: 10px 13px;
+      border-radius: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: rgba(56, 189, 248, 0.2);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .table-wrap {
+      max-height: 455px;
+      overflow: auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
     }
 
     table {
       width: 100%;
-      margin-top: 20px;
       border-collapse: collapse;
+      min-width: 650px;
+      background: rgba(2, 6, 23, 0.22);
     }
 
-    th, td {
-      padding: 8px;
-      border-bottom: 1px solid #334155;
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
       text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #0f172a;
+      color: #bfdbfe;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 12px;
+    }
+
+    td {
+      color: #e5e7eb;
+    }
+
+    .score {
+      font-weight: 900;
+      color: #bbf7d0;
+    }
+
+    .type {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(129, 140, 248, 0.15);
+      color: #c7d2fe;
+      font-weight: 800;
+      font-size: 12px;
+      white-space: nowrap;
     }
 
     .chart-container {
       position: relative;
-      height: 400px;
-      max-height: 60vh;
+      height: 390px;
+      max-height: 58vh;
       width: 100%;
-      margin-top: 20px;
     }
 
     canvas {
       max-height: 100% !important;
     }
+
+    .formula {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(2, 6, 23, 0.42);
+      border: 1px solid var(--line);
+      color: #dbeafe;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .mini-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.68);
+      border: 1px solid var(--line);
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .mini-card p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .note {
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.11);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      padding: 14px 16px;
+      border-radius: 16px;
+      margin-top: 16px;
+      line-height: 1.55;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .grid.two,
+      .dashboard,
+      .cards,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        padding: 30px;
+      }
+
+      .chart-container {
+        height: 360px;
+        max-height: 52vh;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-card,
+      .panel {
+        border-radius: 22px;
+        padding: 20px;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .chart-container {
+        height: 330px;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="page">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo">✦</div>
+        <div>AI Aerospace Decision Tool</div>
+      </div>
+      <div class="nav-links">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#how">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#future">Future</a>
+      </div>
+    </nav>
 
-<h1>AI Aerospace Decision Tool</h1>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">Interactive decision model for aerospace AI</div>
+        <h1>Rank aerospace AI projects by impact, risk, cost, and feasibility.</h1>
+        <p>
+          This dashboard compares real-world-inspired aerospace AI initiatives using a structured weighted scoring model.
+          Adjust priorities and instantly see which projects become most worth pursuing.
+        </p>
+        <div class="quote">“Which AI projects are actually worth pursuing in aerospace?”</div>
+      </div>
 
-<div class="controls">
-  <label>Impact Weight <input type="range" id="impact" min="0" max="1" step="0.1" value="0.5"></label>
-  <label>Risk Weight <input type="range" id="risk" min="0" max="1" step="0.1" value="0.3"></label>
-  <label>Complexity Weight <input type="range" id="complexity" min="0" max="1" step="0.1" value="0.3"></label>
-  <label>Feasibility Weight <input type="range" id="feasibility" min="0" max="1" step="0.1" value="0.4"></label>
-  <label>Cost Weight <input type="range" id="cost" min="0" max="1" step="0.1" value="0.3"></label>
-  <label>Data Weight <input type="range" id="data" min="0" max="1" step="0.1" value="0.5"></label>
-</div>
+      <aside class="panel hero-side">
+        <div class="metric">
+          <strong>6</strong>
+          <span>Decision factors: impact, risk, complexity, feasibility, cost, and data availability.</span>
+        </div>
+        <div class="metric">
+          <strong>5</strong>
+          <span>Example aerospace organizations and AI use cases.</span>
+        </div>
+        <div class="metric">
+          <strong>100%</strong>
+          <span>Client-side HTML, CSS, JavaScript, and Chart.js. No backend required.</span>
+        </div>
+      </aside>
+    </section>
 
-<table id="table">
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>Score</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <section class="section grid two" id="dashboard">
+      <div class="panel">
+        <h2 class="section-title">Adjust priorities</h2>
+        <p class="section-text">
+          Move the sliders to simulate different decision priorities. Higher positive weights reward that factor.
+          Risk, complexity, and cost are subtracted because they make projects harder to justify.
+        </p>
 
-<div class="chart-container">
-  <canvas id="chart"></canvas>
-</div>
+        <div class="controls">
+          <div class="control">
+            <div class="control-top"><span>Impact</span><span id="impactValue">0.5</span></div>
+            <input type="range" id="impact" min="0" max="1" step="0.1" value="0.5" />
+          </div>
 
-<script>
-const projects = [
-  {name:"NASA – Mission Planning AI", impact:9, risk:4, complexity:7, feasibility:8, cost:6, data:7},
-  {name:"Airbus – Predictive Maintenance", impact:8, risk:3, complexity:6, feasibility:9, cost:5, data:8},
-  {name:"SpaceX – Autonomous Navigation", impact:9, risk:5, complexity:8, feasibility:7, cost:7, data:6},
-  {name:"Boeing – Fault Detection AI", impact:8, risk:4, complexity:6, feasibility:8, cost:6, data:7},
-  {name:"Planet Labs – Satellite Analysis", impact:7, risk:3, complexity:5, feasibility:9, cost:4, data:9}
-];
+          <div class="control">
+            <div class="control-top"><span>Risk</span><span id="riskValue">0.3</span></div>
+            <input type="range" id="risk" min="0" max="1" step="0.1" value="0.3" />
+          </div>
 
-let chart;
+          <div class="control">
+            <div class="control-top"><span>Technical Complexity</span><span id="complexityValue">0.3</span></div>
+            <input type="range" id="complexity" min="0" max="1" step="0.1" value="0.3" />
+          </div>
 
-function calculateScores() {
-  const w = {
-    impact: parseFloat(document.getElementById("impact").value),
-    risk: parseFloat(document.getElementById("risk").value),
-    complexity: parseFloat(document.getElementById("complexity").value),
-    feasibility: parseFloat(document.getElementById("feasibility").value),
-    cost: parseFloat(document.getElementById("cost").value),
-    data: parseFloat(document.getElementById("data").value)
-  };
+          <div class="control">
+            <div class="control-top"><span>Feasibility</span><span id="feasibilityValue">0.4</span></div>
+            <input type="range" id="feasibility" min="0" max="1" step="0.1" value="0.4" />
+          </div>
 
-  return projects.map(p => {
-    const score =
-      (p.impact * w.impact) -
-      (p.risk * w.risk) -
-      (p.complexity * w.complexity) +
-      (p.feasibility * w.feasibility) -
-      (p.cost * w.cost) +
-      (p.data * w.data);
+          <div class="control">
+            <div class="control-top"><span>Cost</span><span id="costValue">0.3</span></div>
+            <input type="range" id="cost" min="0" max="1" step="0.1" value="0.3" />
+          </div>
 
-    return { name: p.name, score: score.toFixed(2) };
-  }).sort((a,b) => b.score - a.score);
-}
+          <div class="control">
+            <div class="control-top"><span>Data Availability</span><span id="dataValue">0.5</span></div>
+            <input type="range" id="data" min="0" max="1" step="0.1" value="0.5" />
+          </div>
+        </div>
 
-function updateUI() {
-  const data = calculateScores();
+        <div class="button-row">
+          <button onclick="applyPreset('research')">Research-Focused</button>
+          <button onclick="applyPreset('cost')">Cost-Sensitive</button>
+          <button onclick="applyPreset('safety')">Safety-Critical</button>
+          <button onclick="applyPreset('balanced')">Balanced</button>
+        </div>
+      </div>
 
-  const tbody = document.querySelector("#table tbody");
-  tbody.innerHTML = "";
-  data.forEach(d => {
-    tbody.innerHTML += `<tr><td>${d.name}</td><td>${d.score}</td></tr>`;
-  });
+      <div class="panel">
+        <h2 class="section-title">Ranking chart</h2>
+        <p class="section-text">
+          The graph is intentionally constrained so it stays dashboard-sized instead of stretching down the page.
+        </p>
+        <div class="chart-container">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+    </section>
 
-  const labels = data.map(d => d.name);
-  const scores = data.map(d => d.score);
+    <section class="section panel">
+      <h2 class="section-title">Ranked AI aerospace initiatives</h2>
+      <p class="section-text">
+        These scores are demo estimates based on reasonable public-facing characteristics. They are not official scores
+        from the listed organizations.
+      </p>
 
-  if (chart) chart.destroy();
+      <div class="table-wrap">
+        <table id="rankingTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Organization / AI Use Case</th>
+              <th>Type</th>
+              <th>Impact</th>
+              <th>Risk</th>
+              <th>Complexity</th>
+              <th>Feasibility</th>
+              <th>Cost</th>
+              <th>Data</th>
+              <th>Final Score</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-  chart = new Chart(document.getElementById("chart"), {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Score",
-        data: scores
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: 'y'
+      <div class="note">
+        Note: This is a decision-modeling project, not an official evaluation of NASA, Airbus, SpaceX, Boeing, or Planet Labs.
+        The goal is to demonstrate tradeoff analysis and interactive data visualization.
+      </div>
+    </section>
+
+    <section class="section grid two" id="how">
+      <div class="panel">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-text">
+          Each aerospace AI initiative is scored using six decision factors. The user controls the importance of each
+          factor with sliders, and the final ranking updates immediately.
+        </p>
+
+        <div class="formula">
+          Final Score =<br>
+          (Impact × Weight)<br>
+          − (Risk × Weight)<br>
+          − (Complexity × Weight)<br>
+          + (Feasibility × Weight)<br>
+          − (Cost × Weight)<br>
+          + (Data Availability × Weight)
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="section-title">Scenarios</h2>
+        <p class="section-text">Use the presets to model different decision-making environments:</p>
+        <div class="pill-row">
+          <span class="pill">Research-focused: high impact</span>
+          <span class="pill">Cost-sensitive: lower budget</span>
+          <span class="pill">Safety-critical: lower risk</span>
+          <span class="pill">Balanced: general comparison</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel" id="features">
+      <h2 class="section-title">Key features</h2>
+      <div class="cards">
+        <div class="mini-card">
+          <h3>Weighted Decision Model</h3>
+          <p>Adjust priorities and instantly see how aerospace AI project rankings change.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Interactive Visualization</h3>
+          <p>Dynamic ranking table and compact horizontal bar chart powered by Chart.js.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Real-World Framing</h3>
+          <p>Includes aviation, satellites, autonomy, and space mission planning examples.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Fully Client-Side</h3>
+          <p>Runs entirely in the browser with HTML, CSS, and JavaScript. No backend required.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Python-to-Web Concept</h3>
+          <p>Demonstrates how a Python prototype can be translated into a web dashboard.</p>
+        </div>
+        <div class="mini-card">
+          <h3>Portfolio Ready</h3>
+          <p>Shows decision modeling, tradeoff analysis, data visualization, and clear communication.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid two" id="future">
+      <div class="panel">
+        <h2 class="section-title">AI applications compared</h2>
+        <div class="pill-row">
+          <span class="pill">NASA — Space Mission Planning</span>
+          <span class="pill">Airbus — Predictive Maintenance</span>
+          <span class="pill">SpaceX — Autonomous Navigation</span>
+          <span class="pill">Boeing — Aircraft Fault Detection</span>
+          <span class="pill">Planet Labs — Satellite Image Analysis</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="section-title">Future improvements</h2>
+        <div class="pill-row">
+          <span class="pill">Real aerospace datasets</span>
+          <span class="pill">NASA / airline / startup / defense presets</span>
+          <span class="pill">Flask or FastAPI backend</span>
+          <span class="pill">PDF / CSV export</span>
+          <span class="pill">More AI applications</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Built by Louie Alruzouq · AI Aerospace Decision Tool
+    </footer>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        name: "NASA — Space Mission Planning AI",
+        type: "Government",
+        impact: 9,
+        risk: 4,
+        complexity: 7,
+        feasibility: 8,
+        cost: 6,
+        data: 7
+      },
+      {
+        name: "Airbus — Predictive Maintenance AI",
+        type: "Aviation",
+        impact: 8,
+        risk: 3,
+        complexity: 6,
+        feasibility: 9,
+        cost: 5,
+        data: 8
+      },
+      {
+        name: "SpaceX — Autonomous Navigation",
+        type: "Private Space",
+        impact: 9,
+        risk: 5,
+        complexity: 8,
+        feasibility: 7,
+        cost: 7,
+        data: 6
+      },
+      {
+        name: "Boeing — Aircraft Fault Detection",
+        type: "Aviation",
+        impact: 8,
+        risk: 4,
+        complexity: 6,
+        feasibility: 8,
+        cost: 6,
+        data: 7
+      },
+      {
+        name: "Planet Labs — Satellite Image Analysis",
+        type: "Satellite",
+        impact: 7,
+        risk: 3,
+        complexity: 5,
+        feasibility: 9,
+        cost: 4,
+        data: 9
+      }
+    ];
+
+    const sliders = ["impact", "risk", "complexity", "feasibility", "cost", "data"];
+    let chart;
+
+    const presets = {
+      balanced: {
+        impact: 0.5,
+        risk: 0.3,
+        complexity: 0.3,
+        feasibility: 0.4,
+        cost: 0.3,
+        data: 0.5
+      },
+      research: {
+        impact: 0.9,
+        risk: 0.2,
+        complexity: 0.3,
+        feasibility: 0.4,
+        cost: 0.2,
+        data: 0.7
+      },
+      cost: {
+        impact: 0.5,
+        risk: 0.3,
+        complexity: 0.3,
+        feasibility: 0.6,
+        cost: 0.8,
+        data: 0.5
+      },
+      safety: {
+        impact: 0.6,
+        risk: 0.8,
+        complexity: 0.5,
+        feasibility: 0.7,
+        cost: 0.3,
+        data: 0.6
+      }
+    };
+
+    function getWeights() {
+      const weights = {};
+      sliders.forEach(id => {
+        weights[id] = parseFloat(document.getElementById(id).value);
+        document.getElementById(id + "Value").textContent = weights[id].toFixed(1);
+      });
+      return weights;
     }
-  });
-}
 
-document.querySelectorAll("input").forEach(i => {
-  i.addEventListener("input", updateUI);
-});
+    function calculateScores() {
+      const w = getWeights();
 
-updateUI();
-</script>
+      return projects.map(project => {
+        const score =
+          (project.impact * w.impact) -
+          (project.risk * w.risk) -
+          (project.complexity * w.complexity) +
+          (project.feasibility * w.feasibility) -
+          (project.cost * w.cost) +
+          (project.data * w.data);
 
+        return {
+          ...project,
+          score: Number(score.toFixed(2))
+        };
+      }).sort((a, b) => b.score - a.score);
+    }
+
+    function updateTable(data) {
+      const tbody = document.querySelector("#rankingTable tbody");
+      tbody.innerHTML = "";
+
+      data.forEach((project, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td><strong>${project.name}</strong></td>
+          <td><span class="type">${project.type}</span></td>
+          <td>${project.impact}</td>
+          <td>${project.risk}</td>
+          <td>${project.complexity}</td>
+          <td>${project.feasibility}</td>
+          <td>${project.cost}</td>
+          <td>${project.data}</td>
+          <td class="score">${project.score}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateChart(data) {
+      const labels = data.map(project => project.name);
+      const scores = data.map(project => project.score);
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(document.getElementById("chart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "Final Score",
+            data: scores,
+            borderWidth: 1,
+            borderRadius: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          plugins: {
+            legend: {
+              labels: {
+                color: "#e2e8f0"
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: context => ` Score: ${context.parsed.x}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "#cbd5e1"
+              },
+              grid: {
+                color: "rgba(148, 163, 184, 0.16)"
+              }
+            },
+            y: {
+              ticks: {
+                color: "#cbd5e1",
+                font: {
+                  size: 11
+                }
+              },
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateDashboard() {
+      const data = calculateScores();
+      updateTable(data);
+      updateChart(data);
+    }
+
+    function applyPreset(name) {
+      const selected = presets[name];
+
+      Object.entries(selected).forEach(([id, value]) => {
+        document.getElementById(id).value = value;
+      });
+
+      updateDashboard();
+    }
+
+    sliders.forEach(id => {
+      document.getElementById(id).addEventListener("input", updateDashboard);
+    });
+
+    updateDashboard();
+  </script>
 </body>
 </html>
