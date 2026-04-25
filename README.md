@@ -1,202 +1,108 @@
-# AI and Aerospace Research Starter
+#  AI Aerospace Decision Tool
 
-## Overview
-
-This project is an introductory data analysis and decision-support tool for exploring how artificial intelligence can be applied in aerospace research.
-
-It compares several important aerospace AI applications, including:
-
-* satellite image analysis
-* aircraft fault detection
-* weather forecasting
-* autonomous navigation
-* space mission planning
-
-Using a simple scoring model, the notebook ranks these applications based on their potential usefulness by combining:
-
-* impact
-* risk
-* complexity
-
-The project also includes a small interactive interface that allows the user to select an aerospace AI application and view a quick breakdown of its scores.
+A project that demonstrates how **AI use cases in aerospace can be evaluated and ranked** using a structured decision model.
 
 ---
 
-## Project Goal
+##  Overview
 
-The purpose of this project is to help students explore and organize different uses of artificial intelligence in aerospace.
+The **AI Aerospace Decision Tool** is an interactive web-based dashboard that compares different aerospace AI applications based on key decision factors:
 
-It is designed as:
+* Impact
+* Risk
+* Technical Complexity
+* Feasibility
+* Cost
+* Data Availability
 
-* a beginner-friendly research starter
-* a simple decision-support model
-* a foundation for a larger aerospace AI project or presentation
+The goal is to help answer a real-world question:
 
----
-
-## Features
-
-* Creates a structured table of aerospace AI applications
-* Calculates a usefulness score using a scoring formula
-* Ranks applications from highest to lowest usefulness
-* Visualizes usefulness scores with a bar chart
-* Includes an interactive dropdown to inspect one application at a time
-* Displays a quick score snapshot for the selected application
+> *“Which AI projects are actually worth pursuing in aerospace?”*
 
 ---
 
-## Applications Included
+##  Live Demo
 
-* **Satellite image analysis**
-* **Aircraft fault detection**
-* **Weather forecasting**
-* **Autonomous navigation**
-* **Space mission planning**
+https://louiea11.github.io/ai-aerospace-decision-tool/
 
 ---
 
-## Scoring Method
+##  Key Features
 
-Each application is scored using three factors:
+*  **Weighted Decision Model**
+  Adjust priorities and instantly see how rankings change
 
-* **Impact** – how important or beneficial the application could be
-* **Risk** – how much safety, technical, or operational risk it may involve
-* **Complexity** – how difficult it may be to implement
+*  **Interactive Visualization**
+  Dynamic ranking table + bar chart
 
-The notebook calculates a simple usefulness score using this formula:
+*  **Multiple AI Use Cases**
+  Includes applications in aviation, satellites, and space missions
 
-```python
-Usefulness = Impact * 2 - Risk + Complexity * 0.5
+*  **Fully Client-Side**
+  Runs entirely in the browser (no backend required)
+
+---
+
+## 🛠️ Tech Stack
+
+* **HTML / CSS / JavaScript**
+* **Chart.js** for visualization
+* Originally prototyped in **Python (Matplotlib)** and converted to web
+
+---
+
+## 📊 How It Works
+
+Each application is scored using a weighted formula:
+
+```
+Final Score =  
+(Impact × Weight)  
+− (Risk × Weight)  
+− (Complexity × Weight)  
++ (Feasibility × Weight)  
+− (Cost × Weight)  
++ (Data Availability × Weight)
 ```
 
-This formula is meant to provide a simple comparison model rather than a real engineering standard.
+Users can adjust weights to simulate different priorities such as:
+
+* research-focused (high impact)
+* cost-sensitive (low budget)
+* safety-critical (low risk)
 
 ---
 
-## Interactive Component
+##  AI Applications Compared
 
-The notebook includes an interactive dropdown menu built with `ipywidgets`.
-
-This allows the user to:
-
-* choose one aerospace AI application
-* view its individual scores
-* generate a small bar chart snapshot of that application
-
-This makes the notebook more visual and easier to present.
+* Satellite Image Analysis
+* Aircraft Fault Detection
+* Weather Forecasting
+* Autonomous Navigation
+* Space Mission Planning
 
 ---
 
-## Technologies Used
+##  What This Project Demonstrates
 
-* Python
-* Pandas
-* NumPy
-* Matplotlib
-* ipywidgets
-* Jupyter Notebook
+* Decision modeling and tradeoff analysis
+* Translating Python logic into a web app
+* Data visualization and UI design
+* Ability to communicate technical ideas clearly
 
 ---
 
-## Example Output
+##  Future Improvements
 
-The project produces:
-
-* a ranked table of aerospace AI applications
-* a bar chart of usefulness scores
-* an interactive application viewer
-* quick visual comparisons of impact, risk, and complexity
-
----
-
-## File Structure
-
-```text
-.
-├── AI_Aerospace_Research_Starter.ipynb
-├── README.md
-└── optional_screenshots/
-```
+* Integrate real aerospace datasets
+* Add scenario presets (NASA, airline, startup, defense)
+* Build backend with Flask or FastAPI
+* Export reports (PDF / CSV)
+* Add more AI applications
 
 ---
 
-## Installation
+## 👤 Author
 
-Install the required libraries before running the project:
+**Louie Alruzouq**
 
-```bash
-pip install pandas numpy matplotlib ipywidgets
-```
-
----
-
-## How to Run
-
-### In Jupyter Notebook
-
-1. Open the notebook file
-2. Run the cells in order
-3. View the ranked aerospace AI table
-4. Use the dropdown menu to select an application
-5. Click **Show App** to view details and a score chart
-
-### In Google Colab
-
-Most of the notebook should run normally. Interactive widgets may require extra setup depending on the environment.
-
----
-
-## Educational Value
-
-This project is useful for learning:
-
-* basic data analysis with Python
-* scoring and ranking methods
-* visualization with Matplotlib
-* interactive notebook design
-* how AI can be applied in aerospace engineering and research
-
----
-
-## Extension Ideas
-
-Possible ways to expand this project:
-
-* research real aerospace companies or agencies using AI
-* add one detailed case study
-* compare commercial aviation vs space exploration
-* create a presentation based on the notebook
-* add more scoring categories such as cost, safety, and feasibility
-* allow the user to adjust the scoring weights
-
----
-
-## Limitations
-
-* uses simplified manual scores rather than real industry datasets
-* uses a basic scoring formula rather than a validated engineering model
-* intended for educational exploration, not operational decision-making
-
----
-
-## Future Improvements
-
-Possible upgrades include:
-
-* using real aerospace industry data
-* adding more applications
-* building a larger dashboard
-* comparing NASA, SpaceX, airlines, and defense use cases
-* exporting results into a presentation or report
-
----
-
-## Disclaimer
-
-This project is an educational prototype. The scores and rankings are simplified and should not be used as real aerospace policy or engineering decisions.
-
----
-
-## Author
-
-Louie ALruzouq
