@@ -23,7 +23,7 @@ The goal is to help answer a real-world question:
 
 ##  Live Demo
 
-https://louiea11.github.io/ai-aerospace-decision-tool/
+[https://louiea11.github.io/ai-aerospace-decision-tool/](https://louiea11.github.io/AI_Aerospace_Decision_Tool/#dashboard)
 
 ---
 
